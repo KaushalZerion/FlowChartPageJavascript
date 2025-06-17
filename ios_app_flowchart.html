@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS App Image Handling Flowchart</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .step {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            min-width: 300px;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            border: 2px solid #fff;
+            transition: transform 0.3s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-2px);
+        }
+        
+        .decision {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            width: 200px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            margin: 10px 0;
+        }
+        
+        .process {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .database {
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc8 100%);
+            border-radius: 5px;
+        }
+        
+        .storage {
+            background: linear-gradient(135deg, #ffd3a5 0%, #fd9853 100%);
+        }
+        
+        .arrow {
+            font-size: 24px;
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        .branch {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            margin: 20px 0;
+        }
+        
+        .branch-left, .branch-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+            margin: -10px 0 5px 0;
+        }
+        
+        .metadata-box {
+            background: linear-gradient(135deg, #e0c3fc 0%, #9bb5ff 100%);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            max-width: 400px;
+            margin: 10px 0;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #333;
+            margin: 15px 0;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">iOS App Image Handling Workflow</h1>
+        
+        <div class="flowchart">
+            <!-- Start -->
+            <div class="step">
+                📱 User Creates a Record
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                📷 User Saves Image in the Record
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step process">
+                💾 User Saves ZCDataRecord
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <!-- Processing Loop -->
+            <div class="step process">
+                🔄 For Each Image Element Process
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <!-- Database Storage -->
+            <div class="step database">
+                📊 Store in ZCDataField
+                <div class="code-block">
+                    • RECORD_ID: ZCDataRecord.ID<br>
+                    • ELEMENT_ID: Image Element ID<br>
+                    • FIELD_TYPE: Image Type<br>
+                    • VALUE_TXT: 1
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <!-- File Storage Decision -->
+            <div class="decision">
+                🗂️ Store Image File?
+            </div>
+            
+            <!-- Branching for storage options -->
+            <div class="branch">
+                <div class="branch-left">
+                    <div class="label">✅ SUCCESS</div>
+                    <div class="step storage">
+                        📁 Save to File Location
+                        <div style="font-size: 12px; margin-top: 8px;">
+                            Filename: media_ZCDataField.ID<br>
+                            Includes: Image + Metadata
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="branch-right">
+                    <div class="label">❌ FAILURE</div>
+                    <div class="step database">
+                        🗄️ Save to ZCDataFieldBlob
+                        <div style="font-size: 12px; margin-top: 8px;">
+                            • ZCDataField.ID<br>
+                            • Image Data
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <!-- JavaScript Metadata Storage -->
+            <div class="step database">
+                📝 Store JavaScript Metadata
+                <div class="code-block">
+                    ZCDataRecord.PAGE_JAVASCRIPT = {<br>
+                    &nbsp;&nbsp;"ZCMetadata": {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"imageMetadata": { ... }<br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <!-- Separator -->
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #666, transparent); margin: 30px 0;"></div>
+            
+            <h2 style="color: #333; text-align: center; margin: 20px 0;">Image Access Flow</h2>
+            
+            <!-- Access Flow -->
+            <div class="step">
+                👤 User Accesses Image
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step process">
+                🔍 Load Metadata from ZCDataField.ID
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="decision">
+                📁 File Available?
+            </div>
+            
+            <!-- Access Branching -->
+            <div class="branch">
+                <div class="branch-left">
+                    <div class="label">✅ YES</div>
+                    <div class="step storage">
+                        📂 Load from File
+                        <div style="font-size: 12px; margin-top: 8px;">
+                            media_ZCDataField.ID
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="branch-right">
+                    <div class="label">❌ NO</div>
+                    <div class="step database">
+                        🗄️ Load from ZCDataFieldBlob
+                        <div style="font-size: 12px; margin-top: 8px;">
+                            Using ZCDataField.ID
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step process">
+                📜 Load & Update JavaScript
+                <div style="font-size: 12px; margin-top: 8px;">
+                    From ZCDataRecord.PAGE_JAVASCRIPT<br>
+                    Update with current image metadata
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">
+                ✨ Display Image with Metadata
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <h3 style="color: #333; margin-bottom: 15px;">Legend</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 14px;">
+                <div><span style="color: #ff6b6b;">📱</span> User Action</div>
+                <div><span style="color: #4ecdc4;">🔄</span> Process</div>
+                <div><span style="color: #45b7d1;">💾</span> Database Operation</div>
+                <div><span style="color: #f9ca24;">📁</span> File Storage</div>
+                <div><span style="color: #6c5ce7;">◆</span> Decision Point</div>
+                <div><span style="color: #a29bfe;">📜</span> JavaScript/Metadata</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
